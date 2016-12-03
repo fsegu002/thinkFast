@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      {{title}}
+    </ion-title>
+    <ion-buttons end>
+      Score: {{score}}
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-grid class="pos-bottom">
+    <ion-row>
+      <ion-col width-25></ion-col>
+      <ion-col width-50>
+        <tf-counter ></tf-counter>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card class="question-card">
+    <ion-card-content>
+      <ion-card-title>
+        {{question.question}}
+      </ion-card-title>
+      <ion-card-title>
+        {{question.operation}}
+      </ion-card-title>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid class="pos-bottom">
+    <ion-row >
+      <ion-col width-25 *ngFor="let answer of question.answers">
+        <button ion-button large full (click)="checkAnswer(answer)">{{answer}}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
