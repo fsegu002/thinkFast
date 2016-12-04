@@ -1,5 +1,6 @@
 page-index {
-  #play-button{
+  form{
+    margin-top: 90px;
     text-align: center;
     .start-button{
       width:150px;
@@ -9,6 +10,8 @@ page-index {
       background-color: #0c60ee;
       color: #fff;
       font-size:2em;
+
+      margin-top: 10px;
     }
   }
 }

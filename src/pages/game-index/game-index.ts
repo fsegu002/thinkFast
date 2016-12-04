@@ -1,29 +1,34 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import {NavController, AlertController} from 'ionic-angular';
 import {QuestionGenerator} from "../../app/models/question-generator";
-import {Counter} from "../../app/counter/counter.component";
+import {Counter} from "../counter/counter.component";
 
 @Component({
   selector: 'page-home',
   templateUrl: 'game-index.html'
 })
-export class GameIndex {
-  title: string = 'ThinkFast';
+export class GameIndex implements OnInit, OnDestroy {
+  title: string;
   gameOver: boolean;
   score: number;
-  questions: QuestionGenerator[];
+  questions: QuestionGenerator[] = [];
   answers: number[];
   question: QuestionGenerator;
   counter: Counter;
 
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
     this.score = 0;
-    this.playGame();
+
   }
 
-  playGame(){
+  ngOnInit(){
+    this.title = 'ThinkFast';
+    this.drawQuestion();
+  }
+
+  drawQuestion(){
       if(this.gameOver) return false;
       this.question = new QuestionGenerator();
       this.answers = this.question.answers;
@@ -32,13 +37,18 @@ export class GameIndex {
 
   }
 
+  /**
+   *
+   * @param answer Pass the answer chosen by the user to tested
+   */
   checkAnswer(answer: number){
     this.question.userAnswer = answer;
     if(this.question.userAnswer === this.question.correctAnswer){
-      console.log('Correct answer');
+      this.questions.push(this.question);
+      console.log(this.questions);
       this.score++;
-      // this.counter.ngOnDestroy();
-      this.playGame();
+      this.drawQuestion();
+
     } else {
       console.log('Incorrect answer');
       this.gameOver = true;
@@ -46,6 +56,30 @@ export class GameIndex {
   }
 
 
+  quitGame() {
+    this.navCtrl.pop();
+  }
+
+  ngOnDestroy(){
+    console.log('distroyed');
+  }
+
+  /**
+   *
+   * @param message an event object containing a title property
+   */
+  gameAlert(message: any) {
+    let alert = this.alertCtrl.create({
+      title: message.title,
+      buttons: [
+        {
+          text: 'Close',
+          handler: () => this.navCtrl.pop()
+        }
+      ]
+    });
+    alert.present();
+  }
 
 
 
