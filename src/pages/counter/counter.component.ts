@@ -64,5 +64,9 @@ export class Counter implements OnInit, OnDestroy{
         this.timeLimit = this.RESET_VALUE;
     }
 
+    stopCounter(){
+        this.subscription.unsubscribe();
+    }
+
 
 }

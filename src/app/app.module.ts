@@ -5,6 +5,7 @@ import { MyApp } from './app.component';
 import { GameIndex } from '../pages/game-index/game-index';
 import {Counter} from "../pages/counter/counter.component";
 import {IndexPage} from "../pages/index/index";
+import {StatsPage} from "../pages/stats/stats";
 
 
 
@@ -13,7 +14,8 @@ import {IndexPage} from "../pages/index/index";
     MyApp,
     IndexPage,
     GameIndex,
-    Counter
+    Counter,
+      StatsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -23,7 +25,8 @@ import {IndexPage} from "../pages/index/index";
   entryComponents: [
     MyApp,
     IndexPage,
-    GameIndex
+    GameIndex,
+      StatsPage
   ],
   providers: [
       {provide: ErrorHandler, useClass: IonicErrorHandler}
