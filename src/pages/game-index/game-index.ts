@@ -1,8 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 
-import {NavController, AlertController} from 'ionic-angular';
+import {NavController, AlertController, NavParams} from 'ionic-angular';
 import {QuestionGenerator} from "../../app/models/question-generator";
 import {Counter} from "../counter/counter.component";
+import {User} from "../../app/models/user.model";
 
 @Component({
   selector: 'page-home',
@@ -16,24 +17,36 @@ export class GameIndex implements OnInit, OnDestroy {
   answers: number[];
   question: QuestionGenerator;
   counter: Counter;
+  rightAnswerCount: number;
+  wrongAnswerCount: number;
+  user: User;
+
+  // Wire child instance to parent
+  @ViewChild(Counter)
+  private childCounter: Counter;
 
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
+
+  constructor(public navCtrl: NavController, public params: NavParams, public alertCtrl: AlertController) {
     this.score = 0;
+    this.rightAnswerCount = 0;
+    this.wrongAnswerCount = 0;
+
+    this.user = this.params.get("user");
 
   }
 
   ngOnInit(){
     this.title = 'ThinkFast';
     this.drawQuestion();
+    this.counter = new Counter();
+    console.log( this.counter);
   }
 
   drawQuestion(){
       if(this.gameOver) return false;
       this.question = new QuestionGenerator();
       this.answers = this.question.answers;
-
-      this.counter = new Counter();
 
   }
 
@@ -43,15 +56,18 @@ export class GameIndex implements OnInit, OnDestroy {
    */
   checkAnswer(answer: number){
     this.question.userAnswer = answer;
-    if(this.question.userAnswer === this.question.correctAnswer){
+    if(this.question.userAnswer == this.question.correctAnswer){
       this.questions.push(this.question);
-      console.log(this.questions);
-      this.score++;
+      this.rightAnswerCount++;
+      console.log('Right: ' + this.rightAnswerCount);
       this.drawQuestion();
+      this.childCounter.resetCounter();
+      this.counter = new Counter();
 
     } else {
-      console.log('Incorrect answer');
-      this.gameOver = true;
+      this.wrongAnswerCount++;
+      console.log('Wrong: ' + this.wrongAnswerCount);
+      this.drawQuestion();
     }
   }
 
@@ -61,7 +77,7 @@ export class GameIndex implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    console.log('distroyed');
+    console.log('game distroyed');
   }
 
   /**
@@ -69,15 +85,20 @@ export class GameIndex implements OnInit, OnDestroy {
    * @param message an event object containing a title property
    */
   gameAlert(message: any) {
-    let alert = this.alertCtrl.create({
+    let msg = {
       title: message.title,
+      body: message.body,
       buttons: [
         {
-          text: 'Close',
-          handler: () => this.navCtrl.pop()
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+          }
         }
       ]
-    });
+    };
+
+    let alert = this.alertCtrl.create(msg);
     alert.present();
   }
 

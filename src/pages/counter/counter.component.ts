@@ -11,6 +11,8 @@ export class Counter implements OnInit, OnDestroy{
     timeLimit: number;
     endTime: number;
     subscription: any;
+    RESET_VALUE: number;
+
 
     @Output()
     message: EventEmitter<any> = new EventEmitter();
@@ -18,7 +20,8 @@ export class Counter implements OnInit, OnDestroy{
 
 
     constructor() {
-        this.timeLimit = 15;
+        this.RESET_VALUE = 15;
+        this.timeLimit = this.RESET_VALUE;
         this.endTime = 0;
 
     }
@@ -55,6 +58,10 @@ export class Counter implements OnInit, OnDestroy{
         this.message.emit({
             title: "Time's up!"
         });
+    }
+
+    resetCounter(){
+        this.timeLimit = this.RESET_VALUE;
     }
 
 

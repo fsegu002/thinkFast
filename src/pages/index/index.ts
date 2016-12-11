@@ -26,9 +26,7 @@ export class IndexPage implements OnInit {
 
   save(userObj: any) {
 
-    this.user = new User();
-    this.user.id = 1;
-    this.user.username = userObj.value.username;
+    if(!this.user) this.user = new User(userObj.value.username);
 
 
     // check if model is valid
@@ -39,7 +37,9 @@ export class IndexPage implements OnInit {
   }
 
   startGame() {
-    this.navCtrl.push(GameIndex, this.user);
+    this.navCtrl.push(GameIndex, {
+      user: this.user
+    });
   }
 
 }

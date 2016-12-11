@@ -6,6 +6,8 @@ import { GameIndex } from '../pages/game-index/game-index';
 import {Counter} from "../pages/counter/counter.component";
 import {IndexPage} from "../pages/index/index";
 
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -23,6 +25,8 @@ import {IndexPage} from "../pages/index/index";
     IndexPage,
     GameIndex
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+      {provide: ErrorHandler, useClass: IonicErrorHandler}
+  ]
 })
 export class AppModule {}
