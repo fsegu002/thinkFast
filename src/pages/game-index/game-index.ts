@@ -46,7 +46,6 @@ export class GameIndex implements OnInit, OnDestroy {
     this.title = 'ThinkFast';
     this.drawQuestion();
     this.counter = new Counter();
-    console.log( this.counter);
   }
 
   drawQuestion(){
@@ -68,11 +67,13 @@ export class GameIndex implements OnInit, OnDestroy {
       console.log('Right: ' + this.rightAnswerCount);
 
       if (this.rightAnswerCount === this.MAX_RIGHT_ANSWERS){
+        this.user.score += this.rightAnswerCount;
         this.childCounter.stopCounter();
         this.navCtrl.push(StatsPage, {
           user: this.user,
           stats: this.questions
-        });
+        })
+            .then(() => { console.log('finished pushing page') });
       } else {
         this.drawQuestion();
         this.childCounter.resetCounter();
@@ -80,6 +81,7 @@ export class GameIndex implements OnInit, OnDestroy {
 
 
     } else {
+      this.questions.push(this.question);
       this.wrongAnswerCount++;
       console.log('Wrong: ' + this.wrongAnswerCount);
 
@@ -96,9 +98,28 @@ export class GameIndex implements OnInit, OnDestroy {
     }
   }
 
-
+  /**
+   * Quit game from any stage
+   */
   quitGame() {
-    this.navCtrl.pop();
+    let alert = this.alertCtrl.create({
+      title: "Are you sure you want to quit?",
+      buttons: [
+        {
+          text: "Yes, I'm sure",
+          handler: () => {
+            this.navCtrl.popToRoot();
+          }
+        },
+        {
+          text: "No, let's continue",
+          handler: () => {
+            return false;
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   ngOnDestroy(){

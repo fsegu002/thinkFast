@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {GameIndex} from "../game-index/game-index";
 import {User} from "../../app/models/user.model";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
@@ -13,15 +13,20 @@ export class IndexPage implements OnInit {
   public user: User;
   public userForm: FormGroup;
 
-  constructor(public navCtrl: NavController, private _fb: FormBuilder) {
+  constructor(public navCtrl: NavController,
+              private params: NavParams,
+              private _fb: FormBuilder) {
 
   }
 
   ngOnInit() {
     this.title = 'ThinkFast';
+    (this.user) ? this.params.get('user') : {};
+    console.log(this.user);
     this.userForm = this._fb.group({
       username: ['', Validators.required]
     });
+
   }
 
   save(userObj: any) {
@@ -39,7 +44,11 @@ export class IndexPage implements OnInit {
   startGame() {
     this.navCtrl.push(GameIndex, {
       user: this.user
-    });
+    })
+        .then(() => {
+          this.userForm.value.username = "";
+        })
+
   }
 
 }

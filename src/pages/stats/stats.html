@@ -8,15 +8,36 @@
 
 <ion-content padding>
   <ion-grid>
-      <ion-row>
+      <ion-row class="summary title">
           <ion-col width-50>Operation</ion-col>
-          <ion-col width-25>Correct Answer</ion-col>
+          <ion-col width-25>Right Answer</ion-col>
           <ion-col width-25>Your answer</ion-col>
       </ion-row>
-      <ion-row *ngFor="let us of userStats">
-          <ion-col width-50>{{us.operation}}</ion-col>
+      <ion-row *ngFor="let us of userStats" class="summary items">
+          <ion-col width-50>"{{us.operation}}"</ion-col>
           <ion-col width-25>{{us.correctAnswer}}</ion-col>
           <ion-col width-25>{{us.userAnswer}}</ion-col>
       </ion-row>
   </ion-grid>
+
+  <ion-grid>
+      <ion-row >
+          <ion-col width-50>
+              <div class="userPointsLabel level">
+                  <h2>{{user.level}}</h2>
+                  <span>Level</span>
+              </div>
+          </ion-col>
+          <ion-col width-50>
+              <div class="userPointsLabel score">
+                  <h2>{{user.score}}</h2>
+                  <span>Score</span>
+              </div>
+          </ion-col>
+      </ion-row>
+  </ion-grid>
+
+  <button ion-button block outline (click)="nextGame()">Keep going!</button>
+
+
 </ion-content>
