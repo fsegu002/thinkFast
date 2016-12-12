@@ -70,6 +70,7 @@ export class GameIndex implements OnInit, OnDestroy {
       if (this.rightAnswerCount === this.MAX_RIGHT_ANSWERS){
         this.childCounter.stopCounter();
         this.navCtrl.push(StatsPage, {
+          user: this.user,
           stats: this.questions
         });
       } else {
